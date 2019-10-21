@@ -1,0 +1,4 @@
+dataframe = pd.read_csv("Data.csv")
+dataframe.head()
+dataframe.describe()
+print(dataframe.keys())
