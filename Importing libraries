@@ -1,0 +1,13 @@
+import numpy as np 
+import pandas as pd # for working with dataframes
+import seaborn as sns # for data visualization 
+
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.manifold import TSNE
+from matplotlib import pyplot as plt # for plotting
+import matplotlib.pyplot as plt
+%matplotlib inline
+sns.set_style("whitegrid")
+
+import warnings # http://blog.johnmuellerbooks.com/2015/11/30/warnings-in-python-and-anaconda/
+warnings.filterwarnings("ignore")
