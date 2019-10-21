@@ -1,0 +1,141 @@
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.svm import SVC, LinearSVC
+from xgboost import XGBClassifier
+
+from sklearn.metrics import make_scorer, accuracy_score, roc_auc_score 
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import train_test_split
+
+features = ["acousticness","danceability","duration_ms", "energy", "instrumentalness", "key", "liveness", "loudness", "mode", "speechiness", "tempo", "time_signature", "valence"]
+
+#Next we define 80% of the dataframe for training and 20% of the dataframe for testing.
+training = dataframe.sample(frac = 0.8,random_state = 1613)
+X_train = training[features]
+y_train = training['target']
+X_test = dataframe.drop(training.index)[features]
+training = dataframe.sample(frac = 0.8,random_state = 1613)
+X_train = training[features]
+y_train = training['target']
+X_test = dataframe.drop(training.index)[features]
+
+
+#We add a validation dataset using train_test_split.
+X_train, X_valid, y_train, y_valid = train_test_split(X_train, y_train, test_size = 0.2, random_state = 404)
+
+
+#Random Forest Classifier
+RFC_Model = RandomForestClassifier()
+RFC_Model.fit(X_train, y_train)
+RFC_Predict = RFC_Model.predict(X_valid)
+RFC_Accuracy = accuracy_score(y_valid, RFC_Predict)
+print("Accuracy: " + str(RFC_Accuracy))
+
+RFC_AUC = roc_auc_score(y_valid, RFC_Predict) 
+print("AUC: " + str(RFC_AUC))
+
+
+#K-Nearest Neighbors Classifier
+KNN_Model = KNeighborsClassifier()
+KNN_Model.fit(X_train, y_train)
+KNN_Predict = KNN_Model.predict(X_valid)
+KNN_Accuracy = accuracy_score(y_valid, KNN_Predict)
+print("Accuracy: " + str(KNN_Accuracy))
+
+KNN_AUC = roc_auc_score(y_valid, KNN_Predict) 
+print("AUC: " + str(KNN_AUC))
+
+#Decision Tree Classifier
+DT_Model = DecisionTreeClassifier()
+DT_Model.fit(X_train, y_train)
+DT_Predict = DT_Model.predict(X_valid)
+DT_Accuracy = accuracy_score(y_valid, DT_Predict)
+print("Accuracy: " + str(DT_Accuracy))
+
+DT_AUC = roc_auc_score(y_valid, DT_Predict) 
+print("AUC: " + str(DT_AUC))
+
+
+model_performance_accuracy = pd.DataFrame({'Model': [ 'RandomForestClassifier', 
+                                                      'KNeighborsClassifier',
+                                                      'DecisionTreeClassifier',],
+                                            'Accuracy': [RFC_Accuracy,
+                                                         KNN_Accuracy,
+                                                         DT_Accuracy,]})
+
+model_performance_AUC = pd.DataFrame({'Model': ['RandomForestClassifier', 
+                                                      'KNeighborsClassifier',
+                                                      'DecisionTreeClassifier',],
+                                            'AUC': [RFC_AUC,
+                                                         KNN_AUC,
+                                                         DT_AUC,]})
+                                                         
+                                                         
+
+model_performance_accuracy.sort_values(by = "Accuracy", ascending = False)
+
+model_performance_AUC.sort_values(by = "AUC", ascending = False)
+
+
+##Less features
+
+features = ["loudness", "danceability", "instrumentalness", "speechiness", "duration_ms"]
+
+training = dataframe.sample(frac = 0.8,random_state = 1613)
+X_train = training[features]
+y_train = training['target']
+X_test = dataframe.drop(training.index)[features]
+
+X_train, X_valid, y_train, y_valid = train_test_split(X_train, y_train, test_size = 0.2, random_state = 404)
+
+#Random Forest Classifier
+RFC_Model = RandomForestClassifier()
+RFC_Model.fit(X_train, y_train)
+RFC_Predict = RFC_Model.predict(X_valid)
+RFC_Accuracy = accuracy_score(y_valid, RFC_Predict)
+print("Accuracy: " + str(RFC_Accuracy))
+
+RFC_AUC = roc_auc_score(y_valid, RFC_Predict) 
+print("AUC: " + str(RFC_AUC))
+
+
+#K-Nearest Neighbors Classifier
+KNN_Model = KNeighborsClassifier()
+KNN_Model.fit(X_train, y_train)
+KNN_Predict = KNN_Model.predict(X_valid)
+KNN_Accuracy = accuracy_score(y_valid, KNN_Predict)
+print("Accuracy: " + str(KNN_Accuracy))
+
+KNN_AUC = roc_auc_score(y_valid, KNN_Predict) 
+print("AUC: " + str(KNN_AUC))
+
+#Decision Tree Classifier
+DT_Model = DecisionTreeClassifier()
+DT_Model.fit(X_train, y_train)
+DT_Predict = DT_Model.predict(X_valid)
+DT_Accuracy = accuracy_score(y_valid, DT_Predict)
+print("Accuracy: " + str(DT_Accuracy))
+
+DT_AUC = roc_auc_score(y_valid, DT_Predict) 
+print("AUC: " + str(DT_AUC))
+
+model_performance_accuracy = pd.DataFrame({'Model': [ 'RandomForestClassifier', 
+                                                      'KNeighborsClassifier',
+                                                      'DecisionTreeClassifier',],
+                                            'Accuracy': [RFC_Accuracy,
+                                                         KNN_Accuracy,
+                                                         DT_Accuracy,]})
+
+model_performance_AUC = pd.DataFrame({'Model': ['RandomForestClassifier', 
+                                                      'KNeighborsClassifier',
+                                                      'DecisionTreeClassifier',],
+                                            'AUC': [RFC_AUC,
+                                                         KNN_AUC,
+                                                         DT_AUC,]})
+
+
+model_performance_accuracy.sort_values(by = "Accuracy", ascending = False)
+
+model_performance_AUC.sort_values(by = "AUC", ascending = False)
