@@ -1,0 +1,56 @@
+fig, axs = plt.subplots(4, 1, figsize=(9, 9), sharex=True)
+fig.text(0.5, 0.04, 'Score', ha='center',size=20)
+fig.text(0.04, 0.5, 'Number', va='center', rotation='vertical',size=20)
+axs[0].hist(dataframe['danceability'])
+axs[0].set_title('Danceability')
+axs[1].hist(dataframe['energy'])
+axs[1].set_title('Energy')
+axs[2].hist(dataframe['liveness'])
+axs[2].set_title('Liveness')
+axs[3].hist(dataframe['acousticness'])
+axs[3].set_title('Acousticness')
+fig.suptitle('What Makes It a Good Music?',size=20)
+plt.show()
+
+
+#To find the correlation between high BPM music is more upbeat
+
+fig, axs = plt.subplots(4, 1, figsize=(9, 9), sharex=True)
+fig.text(0.5, 0.04, 'Tempo(BPM)', ha='center',size=20)
+axs[0].scatter(dataframe['tempo'],dataframe['danceability'])
+axs[0].set_title('Danceability')
+axs[1].scatter(dataframe['tempo'],dataframe['energy'])
+axs[1].set_title('Energy')
+axs[2].scatter(dataframe['tempo'],dataframe['liveness'])
+axs[2].set_title('Liveness')
+axs[3].scatter(dataframe['tempo'],dataframe['acousticness'])
+axs[3].set_title('Acousticness')
+fig.suptitle('Higher BPM = More Upbeat?',size=20)
+plt.show()
+
+
+# Heatmap
+top10=dataframe.iloc[0:10]
+top10=top10[['danceability','energy','liveness',
+             'acousticness','loudness','speechiness',
+             'valence','tempo','duration_ms']]
+corr=top10.corr()
+ax = plt.figure(figsize=(10,10))
+sns.heatmap(corr,annot=True,xticklabels=corr.columns.values,yticklabels=corr.columns.values)
+plt.title("Correlation of Song Attributes",size=15)
+plt.show("Correlation of Song Attributes")
+
+# Subplot of scatterplots
+dtall=dataframe[['danceability','energy','liveness',
+             'acousticness','loudness','speechiness',
+             'valence','tempo','duration_ms']]
+ax1 = plt.figure()
+sns.pairplot(dtall)
+plt.title("Pairplot of Song Attributes",size=15)
+plt.show("Pairplot of Song Attributes")
+
+#Use scatter chart and trend line to view their relationship by different targets.
+sns.lmplot(y='loudness',x='energy',data=dataframe, hue='target',palette='BuGn')
+
+#"Energy" and "acousticness" have highly negative correlated relationship. Use scatter chart and trend line to view their relationship by different targets.
+sns.lmplot(y='energy',x='acousticness',data=datafra
